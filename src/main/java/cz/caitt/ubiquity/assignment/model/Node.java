@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 public class Node {
     @NonNull
-    private final String value;
+    private final MacAddress address;
 
     private final List<Node> children = new ArrayList<>();
 }

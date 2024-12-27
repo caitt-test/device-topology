@@ -7,12 +7,12 @@ import java.util.*;
  */
 public class InMemoryDeviceAPI implements DeviceAPI {
 
-    private final Map<String, Device> map = new HashMap<>();
-    private final Map<String, List<String>> childrenMap = new HashMap<>();
-    private final List<String> roots = new ArrayList<>();
+    private final Map<MacAddress, Device> map = new HashMap<>();
+    private final Map<MacAddress, List<MacAddress>> childrenMap = new HashMap<>();
+    private final List<MacAddress> roots = new ArrayList<>();
 
     @Override
-    public synchronized Device registerDevice(DeviceType deviceType, String macAddress, String uplinkAddress) {
+    public synchronized Device registerDevice(DeviceType deviceType, MacAddress macAddress, MacAddress uplinkAddress) {
         Objects.requireNonNull(deviceType, "Device type must not be null");
         if (map.containsKey(macAddress)) {
             throw new IllegalArgumentException("Device mac address " + macAddress + " already exists");
@@ -38,7 +38,7 @@ public class InMemoryDeviceAPI implements DeviceAPI {
     }
 
     @Override
-    public synchronized Device retrieveByMac(String macAddress) {
+    public synchronized Device retrieveByMac(MacAddress macAddress) {
         var result = map.get(macAddress);
         if (result == null) {
             throw new DeviceNotFoundException("Cannot find device with macAddress: " + macAddress);
@@ -53,7 +53,7 @@ public class InMemoryDeviceAPI implements DeviceAPI {
     }
 
     @Override
-    public synchronized Node retrieveTopology(String macAddress) {
+    public synchronized Node retrieveTopology(MacAddress macAddress) {
         var device = map.get(macAddress);
         if (device == null) {
             throw new DeviceNotFoundException("Cannot find device with macAddress: " + macAddress);
@@ -65,8 +65,8 @@ public class InMemoryDeviceAPI implements DeviceAPI {
 
         while (!stack.isEmpty()) {
             var stackElement = stack.pop();
-            for (var ch : childrenMap.get(stackElement.getValue())) {
-                var nodeChild = new Node(ch);
+            for (var address : childrenMap.get(stackElement.getAddress())) {
+                var nodeChild = new Node(address);
                 stackElement.getChildren().add(nodeChild);
                 stack.push(nodeChild);
             }

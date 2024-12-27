@@ -8,6 +8,8 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class RetrieveByMacTest {
+    private final static MacAddress MAC1 = MacAddress.parse("00:00:00:00:00:01");
+    private final static MacAddress MAC2 = MacAddress.parse("00:00:00:00:00:02");
 
     private DeviceAPI deviceAPI;
 
@@ -18,18 +20,18 @@ class RetrieveByMacTest {
 
     @Test
     void retrieveByMac() {
-        var dev1 = deviceAPI.registerDevice(DeviceType.Switch, "MAC1", null);
+        var dev1 = deviceAPI.registerDevice(DeviceType.Switch, MAC1, null);
 
         assertNotNull(dev1);
-        assertThat(deviceAPI.retrieveByMac("MAC1")).isSameAs(dev1);
+        assertThat(deviceAPI.retrieveByMac(MAC1)).isSameAs(dev1);
     }
 
     @Test
     void retrieveByMacNotExist() {
-        deviceAPI.registerDevice(DeviceType.Switch, "MAC1", null);
+        deviceAPI.registerDevice(DeviceType.Switch, MAC1, null);
 
         assertThatExceptionOfType(DeviceNotFoundException.class)
-                .isThrownBy(() -> deviceAPI.retrieveByMac("MAC2"));
+                .isThrownBy(() -> deviceAPI.retrieveByMac(MAC2));
 
     }
 }

@@ -14,7 +14,7 @@ public class Device implements Comparable<Device> {
     private final DeviceType deviceType;
 
     @NonNull
-    private final String macAddress;
+    private final MacAddress macAddress;
 
     @Override
     public int compareTo(Device o) {

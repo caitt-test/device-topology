@@ -20,7 +20,7 @@ The implementation is in-memory only - restarting server erases all previous ope
 called concurrently by many clients, the implementation is synchronized to avoid race-conditions.
 
 If an argument is optional it may be passed as `null`; otherwise `null` triggers `NullPointerException`. Operation never
-returns null. If an operation tries to find item by specific mac address and it does not find anything it throws
+returns null. If an operation tries to find item by specific mac address, and it does not find anything it throws
 `DeviceNotFoundException`. If an operation returns collection, it simply returns an empty collection.
 
 `registerDevice` returns the newly created device to make the API easier to use (mainly for unit tests)
@@ -37,10 +37,10 @@ part is not a requirement, but it makes the output deterministic.
 
 `retrieveAllTopologies` returns list of trees given we allow for disconnected networks in `registerDevice`.
 
-MAC address is represented as string. The system could easily work with any identifiers but based on my interpretation
-of the assignment, I decided to put validation into `registerDevice` to check if the string conforms MAC
-
-``
+MAC address is represented by MacAddress class. This ensures only strings representing valid MAC address. The system
+could easily work with any identifiers but based on my interpretation of the assignment, it was important to maintain
+that only MAC addresses
+are used as IDs. Also this allows to treat "00:00:00:00:00:ff" and "00:00:00:00:00:FF" as the same value.
 
 ## How to run
 

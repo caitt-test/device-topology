@@ -14,7 +14,7 @@ public interface DeviceAPI {
      * @throws IllegalArgumentException if macAddress already exists
      * @throws IllegalArgumentException if uplinkAddress is provided, but it does not exist (or points to the same device)
      */
-    Device registerDevice(DeviceType deviceType, String macAddress, String uplinkAddress);
+    Device registerDevice(DeviceType deviceType, MacAddress macAddress, MacAddress uplinkAddress);
 
     /**
      * Return all devices as list
@@ -30,7 +30,7 @@ public interface DeviceAPI {
      * @return Device with given address
      * @throws DeviceNotFoundException if device with given address was not registered
      */
-    Device retrieveByMac(String macAddress);
+    Device retrieveByMac(MacAddress macAddress);
 
     /**
      * Retrieving all registered network device topologies.
@@ -46,5 +46,5 @@ public interface DeviceAPI {
      * @return Device topology where root node is device with matching macAddress
      * @throws DeviceNotFoundException if device with given address was not registered
      */
-    Node retrieveTopology(String macAddress);
+    Node retrieveTopology(MacAddress macAddress);
 }

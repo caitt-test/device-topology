@@ -20,12 +20,12 @@ public class DeviceController {
 
     @GetMapping("/macAddress/{macAddress}")
     public Device getMacAddress(@PathVariable String macAddress) {
-        return deviceAPI.retrieveByMac(macAddress);
+        return deviceAPI.retrieveByMac(MacAddress.parse(macAddress));
     }
 
     @GetMapping("/topology/{macAddress}")
     public Node getTopology(@PathVariable String macAddress) {
-        return deviceAPI.retrieveTopology(macAddress);
+        return deviceAPI.retrieveTopology(MacAddress.parse(macAddress));
     }
 
     @GetMapping("/topology")
@@ -35,7 +35,9 @@ public class DeviceController {
 
     @PostMapping
     public void createDevice(@RequestBody DeviceRegistrationRequest device) {
-        deviceAPI.registerDevice(device.getDeviceType(), device.getMacAddress(), device.getUplinkAddress());
+        var macAddress = MacAddress.parseNull(device.getMacAddress());
+        var uplinkAddress = MacAddress.parseNull(device.getUplinkAddress());
+        deviceAPI.registerDevice(device.getDeviceType(), macAddress, uplinkAddress);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
